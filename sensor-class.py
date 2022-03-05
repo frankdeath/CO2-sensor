@@ -56,6 +56,27 @@ class Sensor:
         print()
         print("sensor poller quitting...")
 
+    def printConfig(self):
+        print("#####")
+        # scd.temperature_offset = 10
+        print("Temperature offset:", self.temperature_offset)
+        
+        # scd.measurement_interval = 4
+        print("Measurement interval:", self.measurement_interval)
+        
+        # scd.self_calibration_enabled = True
+        print("Self-calibration enabled:", self.self_calibration_enabled)
+        
+        # scd.ambient_pressure = 1100
+        print("Ambient Pressure:", self.ambient_pressure)
+        
+        # scd.altitude = 100
+        print("Altitude:", self.altitude, "meters above sea level")
+        
+        # scd.forced_recalibration_reference = 409
+        print("Forced recalibration reference:", self.forced_recalibration_reference)
+        print("#####")
+
     def printData(self):
         '''
         '''
@@ -68,6 +89,7 @@ class Sensor:
 
 if __name__ == '__main__':
     sensorObj = Sensor()
+    sensorObj.printConfig()
     while True:
         try:
             sensorObj.printData()
