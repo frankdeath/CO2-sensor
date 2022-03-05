@@ -83,6 +83,14 @@ class Sensor:
         if self.CO2 != None:
             print("{}  {:6.1f} ppm  {:4.1f} C  {:4.1f} %rH".format(self.timestamp, self.CO2, self.temperature, self.relative_humidity))
 
+    def getDict(self):
+        '''
+        '''
+        if self.CO2 != None:
+            return {"timestamp":"{}".format(self.timestamp), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
+        else:
+            return {"timestamp":"{}".format(self.timestamp)}
+
     def quit(self):
         self.done = True
 
