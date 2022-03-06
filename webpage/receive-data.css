@@ -2,17 +2,14 @@ body {
     font-family: "Courier New", sans-serif;
     text-align: center;
 }
-.value {
-    min-width: 2em;
-}
 .primary {
-    font-size: 2em;
+    font-size: 400%;
     margin: 0.5em;
 }
 .secondary {
-    font-size: 1.5em;
+    font-size: 300%;
     margin: 0.5em;
 }
 .info {
-    font-size: 1em;
+    font-size: 200%;
 }
