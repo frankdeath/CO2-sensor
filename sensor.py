@@ -47,7 +47,7 @@ class Sensor:
         while self.done == False:
             data_available = self.scd.data_available
             if data_available:
-                self.timestamp = "{}".format(dt.datetime.now())
+                self.timestamp = dt.datetime.now()
                 self.CO2 = self.scd.CO2
                 self.temperature = self.scd.temperature
                 self.relative_humidity = self.scd.relative_humidity
@@ -87,9 +87,9 @@ class Sensor:
         '''
         '''
         if self.CO2 != None:
-            return {"timestamp":"{}".format(self.timestamp), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
+            return {"timestamp":self.timestamp.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
         else:
-            return {"timestamp":"{}".format(self.timestamp)}
+            return {"timestamp":self.timestamp.strftime("%Y-%m-%d %H:%M:%S")}
 
     def quit(self):
         self.done = True
