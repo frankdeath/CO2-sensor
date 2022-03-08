@@ -1,6 +1,6 @@
 var maxPoints = 60;
 var counter = 0;
-var indices = new Array;
+var timestamps = new Array;
 var values = new Array;
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -17,10 +17,10 @@ window.addEventListener("DOMContentLoaded", () => {
     switch (event.type) {
       case "data":
 	counter = counter + 1;
-	sz = indices.push(counter);
+	sz = timestamps.push(event.timestamp);
         if (sz > maxPoints)
 	{
-	  indices.shift();
+	  timestamps.shift();
 	}
         sz = values.push(parseFloat(event.CO2));
         if (sz > maxPoints)
@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded", () => {
         document.title = "CO2: " + event.CO2 + " ppm"
         document.querySelector(".temperature").textContent = event.temperature;
         document.querySelector(".humidity").textContent = event.humidity;
-        document.querySelector(".timestamp").textContent = event.timestamp;
+        document.querySelector(".datetime").textContent = event.datetime;
         const users = `${event.users} user${event.users == 1 ? "" : "s"}`;
         document.querySelector(".users").textContent = users;
         /* Update the plot */

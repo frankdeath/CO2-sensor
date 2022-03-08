@@ -24,6 +24,7 @@ class Sensor:
         self.altitude = self.scd.altitude
         self.forced_recalibration_reference = self.scd.forced_recalibration_reference
         # stuff that will be polled
+        self.datetime = None
         self.timestamp = None
         self.CO2 = None
         self.temperature = None
@@ -47,7 +48,8 @@ class Sensor:
         while self.done == False:
             data_available = self.scd.data_available
             if data_available:
-                self.timestamp = dt.datetime.now()
+                self.datetime = dt.datetime.now()
+                self.timestamp = self.datetime.timestamp()
                 self.CO2 = self.scd.CO2
                 self.temperature = self.scd.temperature
                 self.relative_humidity = self.scd.relative_humidity
@@ -81,15 +83,15 @@ class Sensor:
         '''
         '''
         if self.CO2 != None:
-            print("{}  {:6.1f} ppm  {:4.1f} C  {:4.1f} %rH".format(self.timestamp, self.CO2, self.temperature, self.relative_humidity))
+            print("{}  {:6.1f} ppm  {:4.1f} C  {:4.1f} %rH".format(self.datetime , self.CO2, self.temperature, self.relative_humidity))
 
     def getDict(self):
         '''
         '''
         if self.CO2 != None:
-            return {"timestamp":self.timestamp.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
+            return {"timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
         else:
-            return {"timestamp":self.timestamp.strftime("%Y-%m-%d %H:%M:%S")}
+            return {"timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S")}
 
     def quit(self):
         self.done = True
