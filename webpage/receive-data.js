@@ -41,15 +41,13 @@ function makeChart(data) {
   let start = 0;
   let co2plot = new uPlot(opts, data, document.getElementById('plot'));
   
-  setInterval(function() {
-    co2plot.setData(data);
-  }, interval);
+  return co2plot;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   const websocket = new WebSocket("ws://10.0.0.110:8765/");
 
-  makeChart([timestamps, values]);
+  chart = makeChart([timestamps, values]);
 
   websocket.onmessage = ({ data }) => {
     const event = JSON.parse(data);
@@ -73,7 +71,8 @@ window.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".datetime").textContent = event.datetime;
         const users = `${event.users} user${event.users == 1 ? "" : "s"}`;
         document.querySelector(".users").textContent = users;
-        /* Manually update the plot, if possible */
+        /* Manually update the plot */
+        chart.setData([timestamps, values]);
         break;
       default:
         console.error("unsupported event", event);
