@@ -3,14 +3,53 @@ var counter = 0;
 var timestamps = new Array;
 var values = new Array;
 
+function makeChart(data) {
+  console.time('chart');
+
+  let interval = 2000;
+
+  const opts = {
+    title: "CO2 vs Time",
+    width: 800,
+    height: 300,
+    cursor: {
+      drag: {
+        setScale: false,
+      }
+    },
+    select: {
+      show: false,
+    },
+    series: [
+      {},
+      {
+        label: "CO2",
+	scale: "ppm",
+	value: (u, v) => v == null ? "-" : v.toFixed(1) + "ppm",
+	stroke: "red",
+      },
+    ],
+    axes: [
+      {},
+      {
+        scale: "ppm",
+        values: (u, vals, space) => vals.map(v => +v.toFixed(1) + "ppm"),
+      },
+    ]
+  };
+  
+  let start = 0;
+  let co2plot = new uPlot(opts, data, document.body);
+  
+  setInterval(function() {
+    co2plot.setData(data);
+  }, interval);
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   const websocket = new WebSocket("ws://10.0.0.110:8765/");
 
-  /*PLOT = document.getElementById('plot'); 
-  Plotly.newPlot( PLOT, [{ 
-  x: indices,
-  y: values }], {
-  margin: { t: 0 } } );*/
+  makeChart([timestamps, values]);
 
   websocket.onmessage = ({ data }) => {
     const event = JSON.parse(data);
@@ -34,11 +73,7 @@ window.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".datetime").textContent = event.datetime;
         const users = `${event.users} user${event.users == 1 ? "" : "s"}`;
         document.querySelector(".users").textContent = users;
-        /* Update the plot */
-        /*Plotly.react( PLOT, [{
-        x: indices,
-        y: values }]);*/
-        
+        /* Manually update the plot, if possible */
         break;
       default:
         console.error("unsupported event", event);
