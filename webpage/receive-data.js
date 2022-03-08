@@ -39,7 +39,7 @@ function makeChart(data) {
   };
   
   let start = 0;
-  let co2plot = new uPlot(opts, data, document.body);
+  let co2plot = new uPlot(opts, data, document.getElementById('plot'));
   
   setInterval(function() {
     co2plot.setData(data);
