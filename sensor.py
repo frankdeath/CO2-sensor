@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from collections import deque
 import datetime as dt
 import threading
 import time
@@ -30,6 +31,10 @@ class Sensor:
         self.temperature = None
         self.relative_humidity = None
         #
+        self.historySize = 60
+        self.historyTS = deque([])
+        self.historyCO2 = deque([])
+        #
         self.poll_period = 1.0
         self.done = False
         # start the poller thread
@@ -53,6 +58,13 @@ class Sensor:
                 self.CO2 = self.scd.CO2
                 self.temperature = self.scd.temperature
                 self.relative_humidity = self.scd.relative_humidity
+                # append the lastest reading
+                self.historyTS.append(self.timestamp)
+                self.historyCO2.append(self.CO2)
+                if len(self.historyTS) > self.historySize:
+                    # remove the oldest reading
+                    self.historyTS.popleft()
+                    self.historyCO2.popleft()
             time.sleep(self.poll_period)
 
         print()
@@ -93,6 +105,11 @@ class Sensor:
         else:
             return {"timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S")}
 
+    def getHist(self):
+        '''
+        '''
+        return {"timestamps":list(self.historyTS), "values":list(self.historyCO2)}
+
     def quit(self):
         self.done = True
 
@@ -103,6 +120,7 @@ if __name__ == '__main__':
     while True:
         try:
             sensorObj.printData()
+            #print(sensorObj.getHist())
             time.sleep(2.0)
         except KeyboardInterrupt:
             sensorObj.quit()

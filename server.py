@@ -11,6 +11,13 @@ CLIENTS = set()
 SENSOR = sensor.Sensor()
 
 async def handler(websocket, path):
+    # Send the history when clients connect
+    hist = SENSOR.getHist()
+    hist["type"] = "history"
+    message = json.dumps(hist)
+    await websocket.send(message)
+
+    # Add the client to the broadcast list
     CLIENTS.add(websocket)
     try:
         #!print("someone connected")

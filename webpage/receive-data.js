@@ -47,11 +47,19 @@ function makeChart(data) {
 window.addEventListener("DOMContentLoaded", () => {
   const websocket = new WebSocket("ws://10.0.0.110:8765/");
 
-  chart = makeChart([timestamps, values]);
+  chart = null;
 
   websocket.onmessage = ({ data }) => {
     const event = JSON.parse(data);
     switch (event.type) {
+      case "history":
+        for (let i = 0; i < event.timestamps.length; i++)
+        {
+          timestamps.push(event.timestamps[i]);
+	  values.push(parseFloat(event.values[i]));
+	}
+        chart = makeChart([timestamps, values]);
+        break;
       case "data":
 	counter = counter + 1;
 	sz = timestamps.push(event.timestamp);
