@@ -59,7 +59,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	  values.push(parseFloat(event.values[i]));
 	}
         chart = makeChart([timestamps, values]);
-        break;
+        // fall through to the data case so that the web page updates immediately after loading
       case "data":
 	counter = counter + 1;
 	sz = timestamps.push(event.timestamp);

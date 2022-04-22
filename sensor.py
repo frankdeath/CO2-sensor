@@ -108,7 +108,8 @@ class Sensor:
     def getHist(self):
         '''
         '''
-        return {"timestamps":list(self.historyTS), "values":list(self.historyCO2)}
+        # Assume no one will load the web page in the 1st two seconds after starting the server
+        return {"timestamps":list(self.historyTS), "values":list(self.historyCO2), "timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
 
     def quit(self):
         self.done = True
