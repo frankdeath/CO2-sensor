@@ -58,6 +58,9 @@ class Sensor:
                 self.CO2 = self.scd.CO2
                 self.temperature = self.scd.temperature
                 self.relative_humidity = self.scd.relative_humidity
+                # Monitoring these settings shouldn't be necessary, but self calibration keeps getting automatically re-enabled
+                self.self_calibration_enabled = self.scd.self_calibration_enabled
+                self.forced_recalibration_reference = self.scd.forced_recalibration_reference
                 # append the lastest reading
                 self.historyTS.append(self.timestamp)
                 self.historyCO2.append(self.CO2)
@@ -101,7 +104,7 @@ class Sensor:
         '''
         '''
         if self.CO2 != None:
-            return {"timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
+            return {"timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity), "self_calibration":self.self_calibration_enabled , "calibration_reference":"{}".format(self.forced_recalibration_reference)}
         else:
             return {"timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S")}
 
@@ -109,7 +112,7 @@ class Sensor:
         '''
         '''
         # Assume no one will load the web page in the 1st two seconds after starting the server
-        return {"timestamps":list(self.historyTS), "values":list(self.historyCO2), "timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity)}
+        return {"timestamps":list(self.historyTS), "values":list(self.historyCO2), "timestamp":self.timestamp, "datetime":self.datetime.strftime("%Y-%m-%d %H:%M:%S"), "CO2":"{:.2f}".format(self.CO2), "temperature":"{:.2f}".format(self.temperature), "humidity":"{:.2f}".format(self.relative_humidity), "self_calibration":self.self_calibration_enabled , "calibration_reference":"{}".format(self.forced_recalibration_reference)}
 
     def quit(self):
         self.done = True

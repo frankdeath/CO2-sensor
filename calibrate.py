@@ -28,7 +28,9 @@ print("Self calibration enabled:", scd.self_calibration_enabled)
 print("#####")
 
 scd.self_calibration_enabled = False
+#!time.sleep(1.0)
 scd.forced_recalibration_reference = 409
+#!time.sleep(1.0)
 
 print("#####")
 

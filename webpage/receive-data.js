@@ -79,6 +79,8 @@ window.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".datetime").textContent = event.datetime;
         const users = `${event.users} user${event.users == 1 ? "" : "s"}`;
         document.querySelector(".users").textContent = users;
+        document.querySelector(".self_calibration").textContent = event.self_calibration;
+        document.querySelector(".calibration_reference").textContent = event.calibration_reference;
         /* Manually update the plot */
         chart.setData([timestamps, values]);
         break;
