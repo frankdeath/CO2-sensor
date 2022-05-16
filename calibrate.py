@@ -12,30 +12,36 @@ scd = adafruit_scd30.SCD30(i2c)
 
 print("#####")
 
-# scd.measurement_interval = 4
 print("Measurement interval:", scd.measurement_interval)
-# scd.temperature_offset = 10
 print("Temperature offset:", scd.temperature_offset)
-# scd.ambient_pressure = 1100
 print("Ambient Pressure:", scd.ambient_pressure)
-# scd.altitude = 100
 print("Altitude:", scd.altitude, "meters above sea level")
-# scd.forced_recalibration_reference = 409
-print("Forced recalibration reference:", scd.forced_recalibration_reference)
-# scd.self_calibration_enabled = True
 print("Self calibration enabled:", scd.self_calibration_enabled)
-
-print("#####")
-
-scd.self_calibration_enabled = False
-#!time.sleep(1.0)
-scd.forced_recalibration_reference = 409
-#!time.sleep(1.0)
-
-print("#####")
-
-# scd.forced_recalibration_reference = 409
 print("Forced recalibration reference:", scd.forced_recalibration_reference)
-# scd.self_calibration_enabled = False
-print("Self-calibration enabled:", scd.self_calibration_enabled)
 
+print("#####")
+
+scd.forced_recalibration_reference = 409
+time.sleep(3.0)
+scd.self_calibration_enabled = False
+time.sleep(3.0)
+
+print("#####")
+
+print("Self-calibration enabled:", scd.self_calibration_enabled)
+print("Forced recalibration reference:", scd.forced_recalibration_reference)
+
+while True:
+    if scd.data_available:
+        datetime = dt.datetime.now()
+        timestamp = datetime.timestamp()
+        CO2 = scd.CO2
+        temperature = scd.temperature
+        relative_humidity = scd.relative_humidity
+        # Monitoring these settings shouldn't be necessary, but self calibration keeps getting automatically re-enabled
+        self_calibration_enabled = scd.self_calibration_enabled
+        forced_recalibration_reference = scd.forced_recalibration_reference
+    
+        print("{}  {:6.1f} ppm  {:4.1f} C  {:4.1f} %rH   Auto={}   Ref={}".format(datetime , CO2, temperature, relative_humidity, self_calibration_enabled, forced_recalibration_reference))
+    
+    time.sleep(0.5)
